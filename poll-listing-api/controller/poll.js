@@ -16,11 +16,11 @@ const getVotesByPollId = (req, res) => {
   // Filter votes for the specific poll
   const pollVotes = votesData.votes.filter(vote => vote.polls_id === parseInt(id));
 
-  // Count votes for each option
-  const optionCounts = {};
-  pollVotes.forEach(vote => {
-    optionCounts[vote.answers_id] = (optionCounts[vote.answers_id] || 0) + 1;
-  });
+  // Count votes for each option using reduce
+  const optionCounts = pollVotes.reduce((counts, vote) => {
+    counts[vote.answers_id] = (counts[vote.answers_id] || 0) + 1;
+    return counts;
+  }, {});
 
   // Calculate total votes
   const total = Object.values(optionCounts).reduce((acc, count) => acc + count, 0);
@@ -38,44 +38,6 @@ const getVotesByPollId = (req, res) => {
     answer: options,
     total,
   });
-}
-
-const getPollsWithVotes = (req, res) => {
-  const polls = pollsData.polls;
-  const votes = votesData.votes;
-
-  // Create an object to store poll votes
-  const pollVotes = votes.reduce((acc, vote) => {
-    const { polls_id, answers_id } = vote;
-    acc[polls_id] = acc[polls_id] || {};
-    acc[polls_id][answers_id] = (acc[polls_id][answers_id] || 0) + 1;
-    return acc;
-  }, {});
-
-  // Map poll data with votes
-  const pollsWithVotes = polls.map(poll => {
-    const { id, title, answer } = poll;
-    const options = answer.options.map(option => {
-      const count = pollVotes[id] ? pollVotes[id][option.id] || 0 : 0;
-      const total = pollVotes[id] ? Object.values(pollVotes[id]).reduce((acc, curr) => acc + curr, 0) : 0;
-      const percent = total ? ((count / total) * 100).toFixed(2) : 0;
-      return {
-        id: option.id,
-        label: option.label,
-        count,
-        percent
-      };
-    });
-    const total = options.reduce((acc, curr) => acc + curr.count, 0);
-    return {
-      id,
-      title,
-      answer: options,
-      total
-    };
-  });
-
-  res.json(pollsWithVotes);
 }
 
 const createVotes = (req, res) => {
@@ -118,6 +80,5 @@ const createVotes = (req, res) => {
 
 module.exports = {
 	getVotesByPollId,
-	getPollsWithVotes,
 	createVotes
 }

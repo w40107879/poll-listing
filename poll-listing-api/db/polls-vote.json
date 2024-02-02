@@ -144,6 +144,36 @@
       "id": 29,
       "polls_id": 5,
       "answers_id": 14
+    },
+    {
+      "id": 30,
+      "polls_id": 1,
+      "answers_id": 2
+    },
+    {
+      "id": 31,
+      "polls_id": 1,
+      "answers_id": 1
+    },
+    {
+      "id": 32,
+      "polls_id": 1,
+      "answers_id": 1
+    },
+    {
+      "id": 33,
+      "polls_id": 2,
+      "answers_id": 4
+    },
+    {
+      "id": 34,
+      "polls_id": 2,
+      "answers_id": 3
+    },
+    {
+      "id": 35,
+      "polls_id": 2,
+      "answers_id": 3
     }
   ]
 }

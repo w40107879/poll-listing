@@ -48,6 +48,7 @@ export default function PollList({ poll }) {
                 </li>
               ))}
             </ul>
+            <h4>Total: {vote.total}</h4>
             <form onSubmit={(e) => handlePollSubmit(e, poll.id)}>
             {poll.answer.options.map(option => (
               <div key={option.id}>

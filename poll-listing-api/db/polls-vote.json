@@ -1,19 +1,49 @@
 {
   "votes": [
-		{
+    {
       "id": 1,
       "polls_id": 1,
-			"answers_id": 1
+      "answers_id": 1
     },
-		{
+    {
       "id": 2,
       "polls_id": 1,
-			"answers_id": 2
+      "answers_id": 2
     },
-		{
+    {
       "id": 3,
       "polls_id": 1,
-			"answers_id": 1
+      "answers_id": 1
+    },
+    {
+      "id": 4,
+      "polls_id": 1,
+      "answers_id": 1
+    },
+    {
+      "id": 5,
+      "polls_id": 1,
+      "answers_id": 2
+    },
+    {
+      "id": 6,
+      "polls_id": 1,
+      "answers_id": 1
+    },
+    {
+      "id": 7,
+      "polls_id": 2,
+      "answers_id": 3
+    },
+    {
+      "id": 8,
+      "polls_id": 2,
+      "answers_id": 4
+    },
+    {
+      "id": 9,
+      "polls_id": 5,
+      "answers_id": 13
     }
   ]
 }

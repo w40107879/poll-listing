@@ -6,19 +6,30 @@ import { Pie } from 'react-chartjs-2';
 import { Chart, ArcElement } from 'chart.js'
 Chart.register(ArcElement);
 
-export default function PollList({ poll, handlePollSubmit }) {
+export default function PollList({ poll }) {
   const [vote, setVote] = useState({});
 
   useEffect(() => {
     axios.get(`http://localhost:5000/api/poll/vote/${poll.id}`)
       .then(response => {
-        console.log(response.data);
         setVote(response.data);
       })
       .catch(error => {
         console.error('Error fetching poll votes:', error);
       });
   }, [poll]);
+
+
+  const handlePollSubmit = async (e, pollId) => {
+    try {
+      e.preventDefault();
+      const selectedOption = e.target.elements[`poll_${pollId}`].value;
+      if (selectedOption === '') return;
+      await axios.post(`http://localhost:5000/api/poll/${pollId}`, { option: selectedOption })
+    } catch (e) {
+      console.error('Error submitting poll');
+    }
+  };
 
   return (
     <div>
@@ -33,6 +44,17 @@ export default function PollList({ poll, handlePollSubmit }) {
                 </li>
               ))}
             </ul>
+            <form onSubmit={(e) => handlePollSubmit(e, poll.id)}>
+            {poll.answer.options.map(option => (
+              <div key={option.id}>
+                <label>
+                  <input type={poll.answer.type === 'Single' ? 'radio' : 'checkbox'} name={`poll_${poll.id}`} value={option.id} />
+                  {option.label}
+                </label>
+              </div>
+            ))}
+            <button type="submit">Vote</button>
+          </form>
             <Pie
               data={{
                 labels: vote.answer.map(option => option.label),

@@ -33,18 +33,6 @@ function App() {
     setSelectedPoll(selectedOption.value);
   };
 
-  const handlePollSubmit = (e, pollId) => {
-    e.preventDefault();
-    const selectedOption = e.target.elements[`poll_${pollId}`].value;
-    axios.post(`http://localhost:5000/api/poll/${pollId}`, { option: selectedOption })
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.error('Error submitting poll:', error);
-      });
-  };
-
   return (
     <div className="App">
       <h2>Polls List</h2>
@@ -53,7 +41,7 @@ function App() {
         onChange={handleChange}
         options={options}
       />
-      <PollList poll={selectedPoll} handlePollSubmit={handlePollSubmit} />
+      <PollList poll={selectedPoll}/>
     </div>
   );
 }

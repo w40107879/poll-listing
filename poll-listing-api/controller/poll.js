@@ -1,7 +1,7 @@
 const pollsData = require('../db/polls.json');
 const votesData = require('../db/polls-vote.json');
 const fs = require('fs');
-
+const path = require('path');
 
 const getVotesByPollId = (req, res) => {
   const { id } = req.params;
@@ -78,12 +78,13 @@ const getPollsWithVotes = (req, res) => {
   res.json(pollsWithVotes);
 }
 
-const CreateVotes = (req, res) => {
+const createVotes = (req, res) => {
   const { id } = req.params;
   const { option } = req.body;
 
+	const filePath = path.resolve(__dirname, "../db/polls-vote.json");
   // Read the existing JSON file
-  fs.readFile('poll-vote.json', 'utf8', (err, data) => {
+  fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) {
       console.error('Error reading file:', err);
       return res.status(500).send('Internal Server Error');
@@ -103,7 +104,7 @@ const CreateVotes = (req, res) => {
     const updatedData = JSON.stringify(votes, null, 2); // 2 spaces for indentation
 
     // Write the updated JSON data back to the file
-    fs.writeFile('poll-vote.json', updatedData, 'utf8', (err) => {
+    fs.writeFile(filePath, updatedData, 'utf8', (err) => {
       if (err) {
         console.error('Error writing file:', err);
         return res.status(500).send('Internal Server Error');
@@ -118,5 +119,5 @@ const CreateVotes = (req, res) => {
 module.exports = {
 	getVotesByPollId,
 	getPollsWithVotes,
-	CreateVotes
+	createVotes
 }

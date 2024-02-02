@@ -10,14 +10,17 @@ export default function PollList({ poll }) {
   const [vote, setVote] = useState({});
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/poll/vote/${poll.id}`)
-      .then(response => {
-        setVote(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching poll votes:', error);
-      });
+    fetch()
   }, [poll]);
+
+  const fetch = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/poll/vote/${poll.id}`);
+      setVote(response.data);
+    } catch (error) {
+      console.error('Error fetching poll votes:');
+    }
+  }
 
 
   const handlePollSubmit = async (e, pollId) => {
@@ -26,6 +29,7 @@ export default function PollList({ poll }) {
       const selectedOption = e.target.elements[`poll_${pollId}`].value;
       if (selectedOption === '') return;
       await axios.post(`http://localhost:5000/api/poll/${pollId}`, { option: selectedOption })
+      await fetch()
     } catch (e) {
       console.error('Error submitting poll');
     }

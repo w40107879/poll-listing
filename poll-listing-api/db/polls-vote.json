@@ -44,6 +44,106 @@
       "id": 9,
       "polls_id": 5,
       "answers_id": 13
+    },
+    {
+      "id": 10,
+      "polls_id": 1,
+      "answers_id": 1
+    },
+    {
+      "id": 11,
+      "polls_id": 1,
+      "answers_id": 2
+    },
+    {
+      "id": 12,
+      "polls_id": 1,
+      "answers_id": 1
+    },
+    {
+      "id": 13,
+      "polls_id": 3,
+      "answers_id": 5
+    },
+    {
+      "id": 14,
+      "polls_id": 3,
+      "answers_id": 5
+    },
+    {
+      "id": 15,
+      "polls_id": 1,
+      "answers_id": 1
+    },
+    {
+      "id": 16,
+      "polls_id": 1,
+      "answers_id": 2
+    },
+    {
+      "id": 17,
+      "polls_id": 2,
+      "answers_id": 4
+    },
+    {
+      "id": 18,
+      "polls_id": 2,
+      "answers_id": 3
+    },
+    {
+      "id": 19,
+      "polls_id": 2,
+      "answers_id": 3
+    },
+    {
+      "id": 20,
+      "polls_id": 2,
+      "answers_id": 3
+    },
+    {
+      "id": 21,
+      "polls_id": 2,
+      "answers_id": 3
+    },
+    {
+      "id": 22,
+      "polls_id": 1,
+      "answers_id": 1
+    },
+    {
+      "id": 23,
+      "polls_id": 1,
+      "answers_id": 2
+    },
+    {
+      "id": 24,
+      "polls_id": 1,
+      "answers_id": 2
+    },
+    {
+      "id": 25,
+      "polls_id": 1,
+      "answers_id": 2
+    },
+    {
+      "id": 26,
+      "polls_id": 5,
+      "answers_id": 14
+    },
+    {
+      "id": 27,
+      "polls_id": 5,
+      "answers_id": 14
+    },
+    {
+      "id": 28,
+      "polls_id": 5,
+      "answers_id": 14
+    },
+    {
+      "id": 29,
+      "polls_id": 5,
+      "answers_id": 14
     }
   ]
 }

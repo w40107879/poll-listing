@@ -2,13 +2,12 @@
 
 There is two folder
 
-Frontend - poll-listing (listen 3000 port)
-Backend - poll-listing-api (listen 5000 port)
+* Frontend - poll-listing (listen 3000 port)
+* Backend - poll-listing-api (listen 5000 port)
 
 ### Environment
-```bash
 Node.js version - v18.12.1
-```
+
 
 ### poll-listing
 ```bash

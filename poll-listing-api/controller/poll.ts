@@ -1,23 +1,27 @@
-const pollsData = require('../db/polls.json');
-const votesData = require('../db/polls-vote.json');
-const fs = require('fs');
-const path = require('path');
+import { polls } from '../db/polls.json';
+import { votes as _votes } from '../db/polls-vote.json';
+import { readFile, writeFile } from 'fs';
+import { resolve } from 'path';
 
-const getVotesByPollId = (req, res) => {
+export const getAllPolls = (req: any, res: any) => {
+  res.json(polls);
+}
+
+export const getVotesByPollId = (req: any, res: any) => {
   const { id } = req.params;
 
   // Find the poll with the specified id
-  const poll = pollsData.polls.find(poll => poll.id === parseInt(id));
+  const poll = polls.find(poll => poll.id === parseInt(id));
 
   if (!poll) {
     return res.status(404).json({ error: 'Poll not found' });
   }
 
   // Filter votes for the specific poll
-  const pollVotes = votesData.votes.filter(vote => vote.polls_id === parseInt(id));
+  const pollVotes = _votes.filter(vote => vote.polls_id === parseInt(id));
 
   // Count votes for each option using reduce
-  const optionCounts = pollVotes.reduce((counts, vote) => {
+  const optionCounts = pollVotes.reduce<Record<number, number>>((counts, vote) => {
     counts[vote.answers_id] = (counts[vote.answers_id] || 0) + 1;
     return counts;
   }, {});
@@ -40,13 +44,13 @@ const getVotesByPollId = (req, res) => {
   });
 }
 
-const createVotes = (req, res) => {
+export const createVotes = (req: any, res: any) => {
   const { id } = req.params;
   const { option } = req.body;
 
-	const filePath = path.resolve(__dirname, "../db/polls-vote.json");
+	const filePath = resolve(__dirname, "../db/polls-vote.json");
   // Read the existing JSON file
-  fs.readFile(filePath, 'utf8', (err, data) => {
+  readFile(filePath, 'utf8', (err, data) => {
     if (err) {
       console.error('Error reading file:', err);
       return res.status(500).send('Internal Server Error');
@@ -66,7 +70,7 @@ const createVotes = (req, res) => {
     const updatedData = JSON.stringify(votes, null, 2); // 2 spaces for indentation
 
     // Write the updated JSON data back to the file
-    fs.writeFile(filePath, updatedData, 'utf8', (err) => {
+    writeFile(filePath, updatedData, 'utf8', (err) => {
       if (err) {
         console.error('Error writing file:', err);
         return res.status(500).send('Internal Server Error');
@@ -76,9 +80,4 @@ const createVotes = (req, res) => {
       res.status(200).send('Poll submitted successfully');
     });
   });
-}
-
-module.exports = {
-	getVotesByPollId,
-	createVotes
 }

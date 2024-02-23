@@ -15,8 +15,10 @@ export default function PollList({ poll }) {
 
   const fetch = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/poll/vote/${poll.id}`);
-      setVote(response.data);
+      if (poll.id) {
+        const response = await axios.get(`http://localhost:5000/api/poll/vote/${poll.id}`);
+        setVote(response.data);
+      }
     } catch (error) {
       console.error('Error fetching poll votes:');
     }

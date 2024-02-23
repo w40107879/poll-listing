@@ -13,7 +13,7 @@ function App() {
   useEffect(() => {
     axios.get('http://localhost:5000/api/polls')
       .then(response => {
-        const polls = response.data.polls;
+        const polls = response.data;
         const newOptions = polls.map((poll) => ({
           value: poll,
           label: poll.title

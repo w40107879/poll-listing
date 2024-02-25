@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: poll
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: password123
+      MYSQL_ROOT_PASSWORD: password123
+    volumes:
+      - mysql_data:/var/lib/mysql
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  frontend:
+    build:
+      context: ./poll-listing
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+  backend:
+    build:
+      context: ./poll-listing-api
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - database
+
+volumes:
+  mysql_data:

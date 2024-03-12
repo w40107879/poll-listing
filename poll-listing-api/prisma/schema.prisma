@@ -9,12 +9,12 @@ datasource db {
 
 model answer {
   id         Int       @id @unique(map: "id") @default(autoincrement())
-  label      String?   @default("utf8mb4_unicode_ci") @db.VarChar(50)
-  poll_id    Int?
-  vote_count Int?      @default(0)
+  label      String    @default("utf8mb4_unicode_ci") @db.VarChar(50)
+  poll_id    Int
+  vote_count Int       @default(0)
   created_at DateTime? @default(now()) @db.DateTime(0)
   updated_at DateTime? @default(now()) @db.DateTime(0)
-  poll       poll?     @relation(fields: [poll_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "answer_ibfk_1")
+  poll       poll      @relation(fields: [poll_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "answer_ibfk_1")
 
   @@index([poll_id], map: "poll_id")
 }

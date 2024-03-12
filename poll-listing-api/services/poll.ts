@@ -8,8 +8,10 @@ export default class PollService {
   }
 
 	public getAllVote = async () => {
-		console.log(123);
-		return this.pollModel.getAll();
+		return await this.pollModel.getAll();
 	}
 
+	public getVoteByPoll = async (id: number) => {
+		return await this.pollModel.getVoteByPoll(id);
+	}
 }

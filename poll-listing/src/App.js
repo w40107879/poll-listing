@@ -11,7 +11,7 @@ function App() {
   const [selectedPoll, setSelectedPoll] = useState({});
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/polls')
+    axios.get('http://localhost:5000/api/poll')
       .then(response => {
         const polls = response.data;
         const newOptions = polls.map((poll) => ({

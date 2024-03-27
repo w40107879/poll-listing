@@ -1,9 +1,11 @@
+import { injectable, inject } from 'inversify';
 import PollModel from '../models/poll';
 
+@injectable()
 export default class PollService {
 	private readonly pollModel: PollModel;
 
-  constructor(pollModel: any) {
+  constructor(@inject(PollModel) pollModel: PollModel) {
     this.pollModel = pollModel;
   }
 

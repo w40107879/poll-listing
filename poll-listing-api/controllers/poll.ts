@@ -1,14 +1,13 @@
 import { Example, Route, Get, Controller, Path } from 'tsoa';
 import PollService from '../services/poll'
-import PollModel from '../models/poll';
+import { container } from '../ioc/container';
+
 @Route('poll')
 export class PollController extends Controller {
-  private pollModel: PollModel
   private pollService: PollService
   constructor() {
     super();
-    this.pollModel = new PollModel();
-    this.pollService = new PollService(this.pollModel);
+    this.pollService = container.resolve<PollService>(PollService);
   }
 
   @Get('/')

@@ -1,5 +1,6 @@
+import { injectable } from 'inversify';
 import prisma from '../lib/db';
-
+@injectable()
 export default class PollModel {
 	async getAll() {
 		return prisma.poll.findMany();

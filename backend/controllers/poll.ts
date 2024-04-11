@@ -4,7 +4,7 @@ import { container } from '../ioc/container';
 
 @Route('poll')
 export class PollController extends Controller {
-  private pollService: PollService
+  private readonly pollService
   constructor() {
     super();
     this.pollService = container.resolve<PollService>(PollService);

@@ -4,6 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "build": "npx tsoa --basePath / spec-and-routes && npx tsc",
+    "serve": "node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx concurrently \"nodemon -x tsoa spec-and-routes\" \"nodemon app.ts\"",
     "db:generate": "npx prisma generate",

@@ -2,6 +2,7 @@
 node_modules
 .env*
 build
+dist
 
 .nx/installation
 .nx/cache

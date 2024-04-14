@@ -1,13 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import PollForm from './PollForm';
 import PollPieChart from './PollPieChart';
+import { PollAnswer, Answer } from '@root/types/pollAnswer'
+import { Poll } from '@root/types/poll';
 
-export default function PollList({ poll }) {
-  const [vote, setVote] = useState({});
+interface Props {
+  poll: Poll;
+}
+
+export default function PollList({ poll }: Props) {
+  const [vote, setVote] = useState<PollAnswer>({
+    id: 1,
+    answers: [],
+    total: 0
+});
 
   useEffect(() => {
     fetchVote();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [poll]);
 
   const fetchVote = async () => {
@@ -21,11 +32,12 @@ export default function PollList({ poll }) {
     }
   };
 
-  const handlePollSubmit = async (e, pollId) => {
+  const handlePollSubmit = async (e: React.FormEvent<HTMLFormElement>, pollId: string) => {
     try {
       e.preventDefault();
-      const selectedOption = e.target.elements[`poll_${pollId}`].value;
-      if (selectedOption === '') return;
+      const form = e.currentTarget as HTMLFormElement;
+      const selectedOption = form.querySelector<HTMLInputElement>(`[name="poll_${pollId}"]`)?.value;
+      if (!selectedOption) return;
       await axios.post(`http://localhost:5000/api/answer`, { id: Number(selectedOption) });
       await fetchVote();
     } catch (e) {
@@ -39,9 +51,9 @@ export default function PollList({ poll }) {
         {vote.id && (
           <>
             <ul>
-              {vote.answers.map(answer => (
+              {vote.answers.map((answer: Answer) => (
                 <li key={answer.id}>
-                  {answer.label}: {answer.count} ({answer.percent})
+                  {answer.label}: {answer.vote_count} ({answer.percent})
                 </li>
               ))}
             </ul>

@@ -1,15 +1,19 @@
-import React from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart, ArcElement } from 'chart.js'
 Chart.register(ArcElement);
+import { PollAnswer, Answer } from '@root/types/pollAnswer';
 
-export default function PollPieChart({ vote }) {
+interface Props {
+  vote: PollAnswer
+}
+
+export default function PollPieChart({ vote }: Props) {
   return (
     <Pie
 			data={{
-				labels: vote.answers.map(answer => answer.label),
+				labels: vote.answers.map((answer: Answer) => answer.label),
 				datasets: [{
-					data: vote.answers.map(answer => answer.vote_count),
+					data: vote.answers.map((answer: Answer) => answer.vote_count),
 					backgroundColor: [
 						'rgba(255, 99, 132, 0.6)',
 						'rgba(54, 162, 235, 0.6)',
@@ -21,15 +25,15 @@ export default function PollPieChart({ vote }) {
 				}],
 			}}
 			options={{
-				title: {
-					display: true,
-					text: 'Poll Results',
-					fontSize: 20,
-				},
-				legend: {
-					display: true,
-					position: 'right',
-				},
+				// title: {
+				// 	display: true,
+				// 	text: 'Poll Results',
+				// 	fontSize: 20,
+				// },
+				// legend: {
+				// 	display: true,
+				// 	position: 'right',
+				// },
 				responsive: true,
 				aspectRatio: 4,
 			}}

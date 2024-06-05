@@ -1,49 +1,65 @@
 import { useState, useEffect } from 'react';
-import Select from 'react-select'
-import axios from 'axios';
+import { Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } from '@mui/material';
+import { fetchPolls } from './api/api';
 import PollList from './components/PollList';
-import { Poll, SelectedPoll } from '@root/types/poll';
+import { Poll } from '@root/types/poll';
+
+const defaultPoll: Poll = {
+  id: '',
+  title: '',
+  type: '',
+  created_at: '',
+  updated_at: ''
+};
 
 function App() {
-  const initialPollState: Poll = { id: '', title: '', type: '', created_at: '', updated_at: '' };
-  const [options, setOptions] = useState<SelectedPoll[]>([]);
-  const [selectedPoll, setSelectedPoll] = useState<Poll>(initialPollState);
-  const [selectedOption, setSelectedOption] = useState<SelectedPoll>();
+  const [options, setOptions] = useState<Poll[]>([]);
+  const [selectedPoll, setSelectedPoll] = useState<Poll>(defaultPoll);
 
-  useEffect(() => {
-    axios.get('http://localhost:5000/api/poll')
-      .then((response) => {
-        const { data: polls } = response;
-        const newOptions: SelectedPoll[] = polls.map((poll: Poll) => ({
-          value: poll,
-          label: poll.title
-        }));
-        setOptions(newOptions);
-        setSelectedPoll(newOptions[0].value);
-        setSelectedOption(newOptions[0]);
-      })
-      .catch((error: Error) => {
-        console.log(error)
-      });
-  }, []);
-
-
-  const handleChange = (selectedOption: SelectedPoll | null) => {
-    if (selectedOption !== null) {
-      setSelectedOption(selectedOption);
-      setSelectedPoll(selectedOption.value);
+  const getPolls = async () => {
+    try {
+      const polls = await fetchPolls();
+      setOptions(polls);
+      if (polls.length > 0) {
+        setSelectedPoll(polls[0]);
+      }
+    } catch (error) {
+      console.error('Failed to fetch polls:', error);
     }
   };
+
+  useEffect(() => {
+    getPolls();
+  }, []);
+
+  const handleChange = (event: SelectChangeEvent<string>) => {
+    const selectedId = event.target.value;
+    const selectedOption = options.find(option => option.id === selectedId) || null;
+    if (selectedOption) {
+      setSelectedPoll(selectedOption);
+    }
+  };
+
 
   return (
     <div className="App">
       <h2>Polls List</h2>
-      <Select
-        value={selectedOption}
-        onChange={handleChange}
-        options={options}
-      />
-      <PollList poll={selectedPoll}/>
+      <FormControl fullWidth>
+        <InputLabel id="poll-select-label">Select Poll</InputLabel>
+        <Select
+          labelId="poll-select-label"
+          value={selectedPoll?.id || ''}
+          onChange={handleChange}
+          label="Select Poll"
+        >
+          {options.map(option => (
+            <MenuItem key={option.id} value={option.id}>
+              {option.title}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <PollList poll={selectedPoll} />
     </div>
   );
 }

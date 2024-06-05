@@ -1,4 +1,4 @@
-export type Answer = {
+type Answer = {
 	id: number;
 	label: string;
 	poll_id: number;

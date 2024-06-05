@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { List, ListItem, ListItemText } from '@mui/material';
+import { fetchVotes, saveVote } from '../api/api';
 import PollForm from './PollForm';
 import PollPieChart from './PollPieChart';
-import { PollAnswer, Answer } from '@root/types/pollAnswer'
+import { PollAnswer } from '@root/types/pollAnswer'
 import { Poll } from '@root/types/poll';
 
 interface Props {
@@ -17,15 +18,15 @@ export default function PollList({ poll }: Props) {
 });
 
   useEffect(() => {
-    fetchVote();
+    getVotes();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [poll]);
 
-  const fetchVote = async () => {
+  const getVotes = async () => {
     try {
       if (poll.id) {
-        const response = await axios.get(`http://localhost:5000/api/poll/${poll.id}`);
-        setVote(response.data);
+        const votes = await fetchVotes(poll.id)
+        setVote(votes);
       }
     } catch (error) {
       console.error('Error fetching poll votes:', error);
@@ -38,8 +39,8 @@ export default function PollList({ poll }: Props) {
       const form = e.currentTarget as HTMLFormElement;
       const selectedOption = form.querySelector<HTMLInputElement>(`[name="poll_${pollId}"]`)?.value;
       if (!selectedOption) return;
-      await axios.post(`http://localhost:5000/api/answer`, { id: Number(selectedOption) });
-      await fetchVote();
+      await saveVote(Number(selectedOption))
+      await getVotes();
     } catch (e) {
       console.error('Error submitting poll:', e);
     }
@@ -50,13 +51,16 @@ export default function PollList({ poll }: Props) {
       <div key={poll.id}>
         {vote.id && (
           <>
-            <ul>
-              {vote.answers.map((answer: Answer) => (
-                <li key={answer.id}>
-                  {answer.label}: {answer.vote_count} ({answer.percent})
-                </li>
-              ))}
-            </ul>
+          <List>
+            {vote.answers.map(answer => (
+              <ListItem key={answer.id}>
+                <ListItemText
+                  primary={`${answer.label}: ${answer.vote_count}`}
+                  secondary={`(${answer.percent})`}
+                />
+              </ListItem>
+            ))}
+          </List>
             <h4>Total: {vote.total}</h4>
             <PollForm
               answers={vote.answers}

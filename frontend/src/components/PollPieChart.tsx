@@ -1,7 +1,8 @@
 import { Pie } from 'react-chartjs-2';
 import { Chart, ArcElement } from 'chart.js'
-Chart.register(ArcElement);
 import { PollAnswer, Answer } from '@root/types/pollAnswer';
+
+Chart.register(ArcElement);
 
 interface Props {
   vote: PollAnswer

@@ -5,12 +5,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "backend": "yarn workspace backend dev",
-    "frontend": "yarn workspace frontend dev",
-    "dev": "npx concurrently \"yarn backend\" \"yarn frontend\""
-  },
-  "workspaces": [
-    "backend",
-    "frontend"
-  ]
+    "backend": "pnpm --filter backend dev",
+    "frontend": "pnpm --filter frontend dev",
+    "dev": "pnpm -r run dev"
+  }
 }

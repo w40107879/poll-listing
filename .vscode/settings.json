@@ -1,7 +1,43 @@
 {
-	"editor.codeActionsOnSave": {
-		"source.fixAll.stylelint": "explicit",
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.stylelint": "explicit",
     "source.fixAll.eslint": "explicit"
-	},
-	"eslint.validate": ["javascript"]
+  },
+  /**
+   * ===== Todo-tree =====
+   */
+  "todo-tree.highlights.defaultHighlight": {
+    "type": "whole-line",
+    "fontWeight": "600",
+    "foreground": "#0B132B"
+  },
+  "todo-tree.highlights.customHighlight": {
+    "TODO": {
+      "icon": "alert",
+      "iconColour": "#ffab00",
+      "background": "#ffab00"
+    },
+    "FIXME": {
+      "iconColour": "#ff4d71",
+      "background": "#ff4d71",
+      "gutterIcon": true
+    },
+    "NOTE": {
+      "icon": "eye",
+      "iconColour": "#198241",
+      "background": "#198241"
+    },
+    "BLOCK": {
+      "icon": "bookmark",
+      "iconColour": "#80a8ed",
+      "background": "#80a8ed"
+    }
+  },
+  "todo-tree.general.tags": [
+    "FIXME",
+    "TODO",
+    "NOTE",
+    "BLOCK"
+  ],
 }

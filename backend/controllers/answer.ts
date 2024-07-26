@@ -4,8 +4,10 @@ import AnswerService from '../services/answer';
 
 @Route('answer')
 export class AnswerController extends Controller {
-  private answerModel: AnswerModel
-  private answerService: AnswerService
+  private answerModel: AnswerModel;
+
+  private answerService: AnswerService;
+
   constructor() {
     super();
     this.answerModel = new AnswerModel();
@@ -16,8 +18,8 @@ export class AnswerController extends Controller {
   @Example({
     code: 200,
   })
-	public async vote (@Body() body: any) {
-		const { id } = body;
-		return await this.answerService.increaseVote(id);
-	}
+  public async vote(@Body() body: any) {
+    const { id } = body;
+    return this.answerService.increaseVote(id);
+  }
 }

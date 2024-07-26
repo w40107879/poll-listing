@@ -1,18 +1,24 @@
 import { useState, useEffect } from 'react';
-import { Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } from '@mui/material';
+import {
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  SelectChangeEvent,
+} from '@mui/material';
+import { Poll } from '@root/types/poll';
 import { fetchPolls } from './api/api';
 import PollList from './components/PollList';
-import { Poll } from '@root/types/poll';
 
 const defaultPoll: Poll = {
   id: '',
   title: '',
   type: '',
   created_at: '',
-  updated_at: ''
+  updated_at: '',
 };
 
-function App() {
+const App = () => {
   const [options, setOptions] = useState<Poll[]>([]);
   const [selectedPoll, setSelectedPoll] = useState<Poll>(defaultPoll);
 
@@ -34,12 +40,12 @@ function App() {
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     const selectedId = event.target.value;
-    const selectedOption = options.find(option => option.id === selectedId) || null;
+    const selectedOption =
+      options.find((option) => option.id === selectedId) || null;
     if (selectedOption) {
       setSelectedPoll(selectedOption);
     }
   };
-
 
   return (
     <div className="App">
@@ -52,7 +58,7 @@ function App() {
           onChange={handleChange}
           label="Select Poll"
         >
-          {options.map(option => (
+          {options.map((option) => (
             <MenuItem key={option.id} value={option.id}>
               {option.title}
             </MenuItem>
@@ -62,6 +68,6 @@ function App() {
       <PollList poll={selectedPoll} />
     </div>
   );
-}
+};
 
 export default App;

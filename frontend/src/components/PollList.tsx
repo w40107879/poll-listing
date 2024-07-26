@@ -1,77 +1,90 @@
-import { useState, useEffect } from 'react';
-import { List, ListItem, ListItemText } from '@mui/material';
+import { useState, useEffect, useCallback, FC } from 'react';
+import { Grid, List, ListItem, ListItemText, Typography } from '@mui/material';
+import { PollAnswer } from '@root/types/pollAnswer';
+import { Poll } from '@root/types/poll';
 import { fetchVotes, saveVote } from '../api/api';
 import PollForm from './PollForm';
 import PollPieChart from './PollPieChart';
-import { PollAnswer } from '@root/types/pollAnswer'
-import { Poll } from '@root/types/poll';
 
 interface Props {
   poll: Poll;
 }
 
-export default function PollList({ poll }: Props) {
+const PollList: FC<Props> = ({ poll }) => {
   const [vote, setVote] = useState<PollAnswer>({
     id: 1,
     answers: [],
-    total: 0
-});
+    total: 0,
+  });
 
-  useEffect(() => {
-    getVotes();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [poll]);
-
-  const getVotes = async () => {
+  const getVotes = useCallback(async () => {
     try {
       if (poll.id) {
-        const votes = await fetchVotes(poll.id)
+        const votes = await fetchVotes(poll.id);
         setVote(votes);
       }
     } catch (error) {
       console.error('Error fetching poll votes:', error);
     }
-  };
+  }, [poll.id]);
 
-  const handlePollSubmit = async (e: React.FormEvent<HTMLFormElement>, pollId: string) => {
+  useEffect(() => {
+    getVotes();
+  }, [getVotes]);
+
+  const handlePollSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+    pollId: string,
+  ) => {
+    e.preventDefault();
+    const form = e.currentTarget as HTMLFormElement;
+    const selectedOption = form.querySelector<HTMLInputElement>(
+      `[name="poll_${pollId}"]`,
+    )?.value;
+    if (!selectedOption) return;
+
     try {
-      e.preventDefault();
-      const form = e.currentTarget as HTMLFormElement;
-      const selectedOption = form.querySelector<HTMLInputElement>(`[name="poll_${pollId}"]`)?.value;
-      if (!selectedOption) return;
-      await saveVote(Number(selectedOption))
+      await saveVote(Number(selectedOption));
       await getVotes();
-    } catch (e) {
-      console.error('Error submitting poll:', e);
+    } catch (error) {
+      console.error('Error submitting poll:', error);
     }
   };
 
   return (
     <div>
       <div key={poll.id}>
+        <PollForm
+          answers={vote.answers}
+          type={poll.type}
+          pollId={poll.id}
+          handlePollSubmit={handlePollSubmit}
+        />
         {vote.id && (
-          <>
-          <List>
-            {vote.answers.map(answer => (
-              <ListItem key={answer.id}>
-                <ListItemText
-                  primary={`${answer.label}: ${answer.vote_count}`}
-                  secondary={`(${answer.percent})`}
-                />
-              </ListItem>
-            ))}
-          </List>
-            <h4>Total: {vote.total}</h4>
-            <PollForm
-              answers={vote.answers}
-              type={poll.type}
-              pollId={poll.id}
-              handlePollSubmit={handlePollSubmit}
-            />
-            <PollPieChart vote={vote}/>
-          </>
+          <Grid container spacing={2} mt={2}>
+            <Grid item xs={12} md={6}>
+              <List>
+                {vote.answers.map((answer) => (
+                  <ListItem key={answer.id}>
+                    <ListItemText
+                      primary={`${answer.label}: ${answer.vote_count}`}
+                      secondary={`(${answer.percent})`}
+                    />
+                  </ListItem>
+                ))}
+              </List>
+              <Typography variant="h4" gutterBottom>
+                Total: {vote.total}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <PollPieChart vote={vote} />
+            </Grid>
+          </Grid>
         )}
       </div>
     </div>
   );
-}
+};
+
+export default PollList;

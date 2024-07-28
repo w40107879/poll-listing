@@ -12,6 +12,6 @@ export const fetchVotes = async (id: string): Promise<PollAnswer> => {
   return response.data;
 };
 
-export const saveVote = async (id: number) => {
-  await axios.post(`http://localhost:5000/api/answer`, { id });
+export const saveVote = async (ids: number[]) => {
+  await axios.post(`http://localhost:5000/api/answer`, { ids });
 };

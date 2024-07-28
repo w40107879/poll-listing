@@ -34,17 +34,12 @@ const PollList: FC<Props> = ({ poll }) => {
 
   const handlePollSubmit = async (
     e: React.FormEvent<HTMLFormElement>,
-    pollId: string,
+    selectedAnswers: string[],
   ) => {
     e.preventDefault();
-    const form = e.currentTarget as HTMLFormElement;
-    const selectedOption = form.querySelector<HTMLInputElement>(
-      `[name="poll_${pollId}"]`,
-    )?.value;
-    if (!selectedOption) return;
-
+    if (selectedAnswers.length === 0) return;
     try {
-      await saveVote(Number(selectedOption));
+      await saveVote(selectedAnswers.map(Number));
       await getVotes();
     } catch (error) {
       console.error('Error submitting poll:', error);

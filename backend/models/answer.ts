@@ -1,10 +1,12 @@
 import prisma from '../lib/db';
 
 export default class AnswerModel {
-	async increaseVote(id: number) {
-		return prisma.answer.update({
+	async increaseVote(ids: number[]) {
+		return prisma.answer.updateMany({
 			where: {
-				id
+				id: {
+					in: ids
+				}
 			},
 			data: {
 				vote_count: {

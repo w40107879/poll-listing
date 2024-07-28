@@ -19,7 +19,7 @@ export class AnswerController extends Controller {
     code: 200,
   })
   public async vote(@Body() body: any) {
-    const { id } = body;
-    return this.answerService.increaseVote(id);
+    const { ids } = body;
+    return this.answerService.increaseVote(ids);
   }
 }

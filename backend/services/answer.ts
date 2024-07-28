@@ -7,7 +7,7 @@ export default class AnswerService {
     this.answerModel = answerModel;
   }
 
-	public increaseVote = async (id: number) => {
-		return await this.answerModel.increaseVote(id);
+	public increaseVote = async (ids: number[]) => {
+		return await this.answerModel.increaseVote(ids);
 	}
 }

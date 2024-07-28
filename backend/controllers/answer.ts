@@ -18,8 +18,8 @@ export class AnswerController extends Controller {
   @Example({
     code: 200,
   })
-  public async vote(@Body() body: any) {
+  public async votes(@Body() body: any) {
     const { ids } = body;
-    return this.answerService.increaseVote(ids);
+    return this.answerService.increaseVotes(ids);
   }
 }

@@ -1,10 +1,9 @@
 import { useState, useEffect, useCallback, FC } from 'react';
-import { Grid, List, ListItem, ListItemText, Typography } from '@mui/material';
 import { PollAnswer } from '@root/types/pollAnswer';
 import { Poll } from '@root/types/poll';
 import { fetchVotes, saveVote } from '../api/api';
 import PollForm from './PollForm';
-import PollPieChart from './PollPieChart';
+import PollResults from './PollResults';
 
 interface Props {
   poll: Poll;
@@ -55,28 +54,7 @@ const PollList: FC<Props> = ({ poll }) => {
           pollId={poll.id}
           handlePollSubmit={handlePollSubmit}
         />
-        {vote.id && (
-          <Grid container spacing={2} mt={2}>
-            <Grid item xs={12} md={6}>
-              <List>
-                {vote.answers.map((answer) => (
-                  <ListItem key={answer.id}>
-                    <ListItemText
-                      primary={`${answer.label}: ${answer.vote_count}`}
-                      secondary={`(${answer.percent})`}
-                    />
-                  </ListItem>
-                ))}
-              </List>
-              <Typography variant="h4" gutterBottom>
-                Total: {vote.total}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <PollPieChart vote={vote} />
-            </Grid>
-          </Grid>
-        )}
+        {vote.id && <PollResults vote={vote} />}
       </div>
     </div>
   );
